@@ -1,13 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Socket.io Server</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Socket.io Server</h1>
-    
-</body>
+
+    <form id="chatForm">
+      <input type="text" name="message" placeholder="message" />
+      <button>Enter</button>
+    </form>
+
+    <div id="chatOutput"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const chatForm = document.getElementById('chatForm');
+      const chatOutput = document.getElementById('chatOutput');
+
+      let roomId = window.location.href.substring(
+        window.location.href.lastIndexOf('/') + 1
+      );
+
+      chatForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const message = event.target.message.value;
+        socket.emit('newMessage', { message });
+      });
+
+      socket.on('newMessage', function (data) {
+        chatOutput.innerText += data;
+      });
+
+      socket.on('connect', function () {
+        socket.emit('joinroom', { roomId });
+      });
+    </script>
+  </body>
 </html>
