@@ -11,7 +11,7 @@
 
     <form id="chatForm">
       <input type="text" name="message" placeholder="message" />
-      <button>Enter</button>
+      <button type="submit">Enter</button>
     </form>
 
     <div id="chatOutput"></div>
@@ -34,7 +34,7 @@
       });
 
       socket.on('newMessage', function (data) {
-        chatOutput.innerText += data;
+        chatOutput.innerText +=  data + '\n';
       });
 
       socket.on('connect', function () {
